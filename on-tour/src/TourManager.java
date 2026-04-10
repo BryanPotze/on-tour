@@ -141,6 +141,67 @@ public class TourManager
         return null;
     }
 
+    public boolean hasShowOnDate(Artist artist, LocalDate date)
+    {
+        for (Concert concert : concerts)
+        {
+            if (concert.getArtist().equals(artist) && concert.getDate().equals(date))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private List<Concert> getConcertsInFuture(List<Concert> concerts)
+    {
+        List<Concert> concertsInFuture = new ArrayList<>();
+
+        for (Concert concert : concerts)
+        {
+            if (LocalDate.MAX.isAfter(LocalDate.now()))
+            {
+                concertsInFuture.add(concert);
+            }
+        }
+
+        return concertsInFuture;
+    }
+
+
+
+    private List<Concert> getConcertsWithZeroTicketsSold(List<Concert> concerts)
+    {
+        List<Concert> concertsWithZeroTicketsSold = new ArrayList<>();
+
+        for (Concert concert : concerts)
+        {
+            if (concert.getSoldTickets().isEmpty())
+            {
+                concertsWithZeroTicketsSold.add(concert);
+            }
+        }
+
+        return concertsWithZeroTicketsSold;
+    }
+
+    public void removeCancelledConcerts()
+    {
+        List<Concert> concertsWithZeroTicketsSold = new ArrayList<>();
+        for (Concert concert : concerts)
+        {
+            if (concert.getSoldTickets().isEmpty())
+            {
+                concertsWithZeroTicketsSold.add(concert);
+            }
+        }
+        for (Concert concert : concerts)
+        {
+            concerts.remove(concertsWithZeroTicketsSold);
+        }
+    }
+
     public int getTotalRevenueInEuros(String artistName)
     {
         int totalRevenueAmount = 0;
